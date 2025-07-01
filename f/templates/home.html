@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="home-container">
+    <div class="sidebar">
+        <div class="logo-sidebar">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Aditya Degree College Logo">
+            <h3>Aditya Degree College</h3>
+        </div>
+        
+        <div class="class-buttons">
+            <h3>Select Class</h3>
+            <a href="{{ url_for('groups', class_name='1st Year') }}" class="class-btn" data-class="1st Year">2019-2020</a>
+            <a href="{{ url_for('groups', class_name='2nd Year') }}" class="class-btn" data-class="2nd Year">2020-2021</a>
+            <a href="{{ url_for('groups', class_name='3rd Year') }}" class="class-btn" data-class="3rd Year">2021-2022</a>
+            <a href="{{ url_for('groups', class_name='3rd Year') }}" class="class-btn" data-class="3rd Year">2022-2023</a>
+            <a href="{{ url_for('groups', class_name='3rd Year') }}" class="class-btn" data-class="3rd Year">2024-2024</a>
+            <a href="{{ url_for('groups', class_name='3rd Year') }}" class="class-btn" data-class="3rd Year">2024-2025</a>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="welcome-message">
+            <h2>Welcome to Fee Management System</h2>
+            <p>Select a class from the sidebar to view or manage fee records.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
