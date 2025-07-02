@@ -1,0 +1,218 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="form-container">
+    <h2>{{ action }} Fee Record - {{ class_name }} - {{ group_name }}</h2>
+    
+    <form method="POST" class="fee-form" onsubmit="calculateTotal()">
+        <div class="form-section">
+            <h3>Student Information</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="student_name">Student Name*</label>
+                    <input type="text" id="student_name" name="student_name" 
+                           value="{{ record.student_name if record else '' }}" required class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="admission_number">Admission Number*</label>
+                    <input type="text" id="admission_number" name="admission_number" 
+                           value="{{ record.admission_number if record else '' }}" required class="form-input">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="semester">Semester*</label>
+                    <select id="semester" name="semester" required class="form-input">
+                        <option value="">Select Semester</option>
+                        <option value="1st Semester" {% if record and record.semester == '1st Semester' %}selected{% endif %}>1st Semester</option>
+                        <option value="2nd Semester" {% if record and record.semester == '2nd Semester' %}selected{% endif %}>2nd Semester</option>
+                        <option value="3rd Semester" {% if record and record.semester == '3rd Semester' %}selected{% endif %}>3rd Semester</option>
+                        <option value="4th Semester" {% if record and record.semester == '4th Semester' %}selected{% endif %}>4th Semester</option>
+                        <option value="5th Semester" {% if record and record.semester == '5th Semester' %}selected{% endif %}>5th Semester</option>
+                        <option value="6th Semester" {% if record and record.semester == '6th Semester' %}selected{% endif %}>6th Semester</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="managerial_convener">Managerial Convener*</label>
+                    <select id="managerial_convener" name="managerial_convener" required class="form-input">
+                        <option value="Management" {% if record and record.managerial_convener == 'Management' %}selected{% endif %}>Management</option>
+                        <option value="College" {% if record and record.managerial_convener == 'College' %}selected{% endif %}>Convener</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" class="form-input">{{ record.address if record else '' }}</textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>Fee Details</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="tuition_fee">Tuition Fee</label>
+                    <input type="number" step="0.01" id="tuition_fee" name="tuition_fee" 
+                           value="{{ record.tuition_fee if record and record.tuition_fee else '' }}" 
+                           class="form-input" onchange="calculateTotal()">
+                </div>
+                <div class="form-group">
+                    <label for="practical_fee">Practical Fee</label>
+                    <input type="number" step="0.01" id="practical_fee" name="practical_fee" 
+                           value="{{ record.practical_fee if record and record.practical_fee else '' }}" 
+                           class="form-input" onchange="calculateTotal()">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="university_fee">University Fee</label>
+                    <input type="number" step="0.01" id="university_fee" name="university_fee" 
+                           value="{{ record.university_fee if record and record.university_fee else '' }}" 
+                           class="form-input" onchange="calculateTotal()">
+                </div>
+                <div class="form-group">
+                    <label for="stationary_fee">Stationary Fee</label>
+                    <input type="number" step="0.01" id="stationary_fee" name="stationary_fee" 
+                           value="{{ record.stationary_fee if record and record.stationary_fee else '' }}" 
+                           class="form-input" onchange="calculateTotal()">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="internship_fee">Internship Fee</label>
+                    <input type="number" step="0.01" id="internship_fee" name="internship_fee" 
+                           value="{{ record.internship_fee if record and record.internship_fee else '' }}" 
+                           class="form-input" onchange="calculateTotal()">
+                </div>
+                <div class="form-group">
+                    <label for="viva_fee">Viva Fee</label>
+                    <input type="number" step="0.01" id="viva_fee" name="viva_fee" 
+                           value="{{ record.viva_fee if record and record.viva_fee else '' }}" 
+                           class="form-input" onchange="calculateTotal()">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="bus_total_fee">Bus Total Fee</label>
+                    <input type="number" step="0.01" id="bus_total_fee" name="bus_total_fee" 
+                           value="{{ record.bus_total_fee if record and record.bus_total_fee else '' }}" 
+                           class="form-input" onchange="calculateBusPending()">
+                </div>
+                <div class="form-group">
+                    <label for="bus_paid_fee">Bus Paid Fee</label>
+                    <input type="number" step="0.01" id="bus_paid_fee" name="bus_paid_fee" 
+                           value="{{ record.bus_paid_fee if record and record.bus_paid_fee else '' }}" 
+                           class="form-input" onchange="calculateBusPending()">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="bus_pending_fee">Bus Pending Fee</label>
+                    <input type="number" step="0.01" id="bus_pending_fee" name="bus_pending_fee" 
+                           value="{{ record.bus_pending_fee if record and record.bus_pending_fee else '' }}" 
+                           class="form-input" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="discount">Discount</label>
+                    <input type="number" step="0.01" id="discount" name="discount" 
+                           value="{{ record.discount if record else 0 }}" 
+                           class="form-input" onchange="calculateTotal()">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="total_amount">Total Amount*</label>
+                    <input type="number" step="0.01" id="total_amount" name="total_amount" 
+                           value="{{ record.total_amount if record else '' }}" 
+                           required class="form-input" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="paid_amount">Paid Amount*</label>
+                    <input type="number" step="0.01" id="paid_amount" name="paid_amount" 
+                           value="{{ record.paid_amount if record else '' }}" 
+                           required class="form-input" onchange="calculateTotal()">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pending_amount">Remaining Balance</label>
+                    <input type="number" step="0.01" id="pending_amount" name="pending_amount" 
+                           value="{{ record.pending_amount if record else '' }}" 
+                           class="form-input" readonly>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>Payment Information</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="date">Date*</label>
+                    <input type="date" id="date" name="date" 
+                           value="{{ record.date if record else '' }}" required class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="bill_number">Bill Number*</label>
+                    <input type="text" id="bill_number" name="bill_number" 
+                           value="{{ record.bill_number if record else '' }}" required class="form-input">
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn submit-btn">{{ action }} Record</button>
+            <a href="{{ url_for('fee_table', class_name=class_name, group_name=group_name) }}" class="btn cancel-btn">Cancel</a>
+            {% if record %}
+            <a href="{{ url_for('download_record_pdf', record_id=record.id) }}" class="btn print-btn">Print Receipt</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+<script>
+    function calculateBusPending() {
+        const busTotal = parseFloat(document.getElementById('bus_total_fee').value) || 0;
+        const busPaid = parseFloat(document.getElementById('bus_paid_fee').value) || 0;
+        const busPending = busTotal - busPaid;
+        document.getElementById('bus_pending_fee').value = busPending.toFixed(2);
+        calculateTotal();
+    }
+    
+    function calculateTotal() {
+        // Get all fee values
+        const tuition = parseFloat(document.getElementById('tuition_fee').value) || 0;
+        const busTotal = parseFloat(document.getElementById('bus_total_fee').value) || 0;
+        const practical = parseFloat(document.getElementById('practical_fee').value) || 0;
+        const university = parseFloat(document.getElementById('university_fee').value) || 0;
+        const stationary = parseFloat(document.getElementById('stationary_fee').value) || 0;
+        const internship = parseFloat(document.getElementById('internship_fee').value) || 0;
+        const viva = parseFloat(document.getElementById('viva_fee').value) || 0;
+        const discount = parseFloat(document.getElementById('discount').value) || 0;
+        const paidAmount = parseFloat(document.getElementById('paid_amount').value) || 0;
+        
+        // Calculate total
+        const total = (tuition + busTotal + practical + university + 
+                      stationary + internship + viva) - discount;
+        const pending = total - paidAmount;
+        
+        // Update total amount field
+        document.getElementById('total_amount').value = total.toFixed(2);
+        document.getElementById('pending_amount').value = pending.toFixed(2);
+    }
+    
+    // Initialize calculations when page loads
+    window.onload = function() {
+        calculateBusPending();
+        calculateTotal();
+    };
+</script>
+{% endblock %}

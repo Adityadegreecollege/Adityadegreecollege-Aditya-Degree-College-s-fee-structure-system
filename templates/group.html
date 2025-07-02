@@ -1,0 +1,60 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="group-container">
+    <h2>Select Year for {{ class_name }}</h2>
+    <div class="group-buttons">
+        {% for group in groups %}
+            <a href="{{ url_for('fee_table', class_name=class_name, group_name=group) }}" 
+               class="group-btn">
+                {{ group }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .group-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.group-container h2 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.group-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.group-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 1rem;
+    background-color: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.group-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(255, 123, 0, 0.2);
+}
+
+</style>
+{% endblock %}
