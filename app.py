@@ -10,10 +10,10 @@ app.secret_key = 'your_secret_key_here'
 
 # Database configuration
 db_config = {
-    'host': 'localhost',
-    'user': 'root',
+    'host': 'vishnu43.mysql.pythonanywhere-services.com',
+    'user': 'vishnu43',
     'password': 'vishnu@123',
-    'database': 'college_fee_management'
+    'database': 'vishnu43$college_fee_management'
 }
 
 # Academic groups data
