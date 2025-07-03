@@ -12,7 +12,7 @@ app.secret_key = 'your_secret_key_here'
 db_config = {
     'host': 'vishnu43.mysql.pythonanywhere-services.com',
     'user': 'vishnu43',
-    'password': 'vishnu@123',
+    'password': 'python@123',
     'database': 'vishnu43$college_fee_management'
 }
 
